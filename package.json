@@ -6,21 +6,44 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint \"src/**/*.{js,jsx}\"",
+    "lint:fix": "eslint  \"src/**/*.{js,jsx}\" --fix",
     "preview": "vite preview"
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-redux": "^9.1.0",
+    "redux": "^5.0.1",
+    "sass": "^1.74.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.2.1",
+    "babel-eslint": "^10.1.0",
+    "css-loader": "^7.1.1",
     "eslint": "^8.57.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
+    "prettier": "3.2.5",
+    "sass-loader": "^14.2.0",
+    "style-loader": "^4.0.0",
     "vite": "^5.2.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": "npx eslint",
+    "**/*.{js,jsx,scss}": [
+      "npm run lint",
+      "prettier --write"
+    ],
+    "*.{js,jsx,html,css}": "npx prettier --check"
   }
 }

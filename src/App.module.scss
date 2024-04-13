@@ -1,0 +1,48 @@
+@import './component/AsideMenu/AsideMenu.module.scss';
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  color: #4a4a4a;
+}
+
+.pictures {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 50px 0;
+}
+
+body {
+  min-height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+
+  font:
+    16px/1.4 'Open Sans',
+    sans-serif;
+  background: #f3f7fa;
+  color: #4a4a4a;
+}
+
+button {
+  background-color: #ffffff;
+  border: 0.5px solid #dfe5ec;
+}
+
+.content__main {
+  padding-left: 20px;
+}
+
+.aviation-content {
+  width: 754px;
+  margin: 0 auto;
+}
+
+.content {
+  display: flex;
+}
