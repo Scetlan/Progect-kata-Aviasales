@@ -2,12 +2,13 @@ import AsideMenu from './component/AsideMenu/AsideMenu';
 import HeaderBtn from './component/ContentMain/HeaderBtn/HeaderBtn';
 import Ticket from './component/ContentMain/Ticket/Ticket';
 import classes from './App.module.scss';
+import img from './images/Logo.svg';
 
 function App() {
   return (
     <div className={classes['aviation-content']}>
       <section className={classes.pictures}>
-        <img className={classes.icon} src="/src/images/Logo.svg" alt="" />
+        <img className={classes.icon} src={img} alt="" />
       </section>
       <section className={classes.content}>
         <AsideMenu />
