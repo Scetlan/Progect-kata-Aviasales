@@ -1,4 +1,4 @@
-@import './component/AsideMenu/AsideMenu.module.scss';
+@import './component/AsideMenu/MenuFilterTicket.module.scss';
 
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
 
@@ -34,15 +34,7 @@ button {
   border: 0.5px solid #dfe5ec;
 }
 
-.content__main {
-  padding-left: 20px;
-}
-
 .aviation-content {
   width: 754px;
   margin: 0 auto;
-}
-
-.content {
-  display: flex;
 }
