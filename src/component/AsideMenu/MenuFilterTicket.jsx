@@ -1,67 +1,63 @@
 import { useDispatch, useSelector } from 'react-redux';
 import classes from './MenuFilterTicket.module.scss';
-import { ticketsActions } from '../../redux/reducer/ticketsSlice';
-import { useEffect } from 'react';
 import Checkbox from '../wrapperComponents/Checkbox';
+import { ticketsActions } from '../../redux/reducer/ticketsSlice';
 
 function MenuFilterTicket() {
   const dispatch = useDispatch();
+  const stateFetch = useSelector(state => state.tickets);
 
-  const checkBoxType = useSelector(state => state.ticketsReducer.stateCheckBox);
+  const { setIsChecked } = ticketsActions;
 
-  const { disabledAllCheckbox, noneCheckbox, firstCheckbox, secondCheckbox, thirdCheckbox } =
-    checkBoxType;
-
-  function updateCheckBox(event) {
-    const data = {
-      key: event.currentTarget.value,
-      isActive: event.currentTarget.checked,
-    };
-    dispatch(ticketsActions.setCheckBox(data));
-  }
-
-  useEffect(() => {
-    dispatch(ticketsActions.executeFilter());
-    // dispatch(fetchTicketsSort());
-  }, [dispatch, checkBoxType]);
-
+  const { all, noneTransfers, oneTransfers, twoTransfers, thirdTransfers } =
+    stateFetch.stateCheckBox;
   return (
     <aside className={classes.content__menu}>
       <div className={classes['content__menu-container']}>
         <h1 className={classes.content__title}>Количество пересадок</h1>
         <Checkbox
           id="all"
-          checked={!disabledAllCheckbox}
-          value="allCheckbox"
-          onChange={updateCheckBox}
+          checked={all}
+          value="all"
+          onChange={() => {
+            dispatch(setIsChecked('all'));
+          }}
           text="Все"
         />
         <Checkbox
           id="off"
-          checked={noneCheckbox}
-          value="noneCheckbox"
-          onChange={updateCheckBox}
+          checked={noneTransfers}
+          value="noneTransfers"
+          onChange={() => {
+            dispatch(setIsChecked('all'));
+          }}
           text="Без пересадок"
         />
         <Checkbox
           id="one"
-          checked={firstCheckbox}
-          value="firstCheckbox"
-          onChange={updateCheckBox}
+          checked={oneTransfers}
+          value="oneTransfers"
+          onChange={() => {
+            dispatch(setIsChecked('all'));
+          }}
           text="1 пересадка"
         />
         <Checkbox
           id="two"
-          checked={secondCheckbox}
-          value="secondCheckbox"
-          onChange={updateCheckBox}
+          checked={twoTransfers}
+          value="twoTransfers"
+          onChange={() => {
+            dispatch(setIsChecked('all'));
+          }}
           text="2 пересадки"
         />
         <Checkbox
           id="three"
-          checked={thirdCheckbox}
-          value="thirdCheckbox"
-          onChange={updateCheckBox}
+          checked={thirdTransfers}
+          value="thirdTransfers"
+          onChange={() => {
+            dispatch(setIsChecked('all'));
+          }}
           text="3 пересадки"
         />
       </div>

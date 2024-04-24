@@ -19,11 +19,6 @@ class Api {
     return this.fetchAviasales(url, optionsWithMethod);
   }
 
-  async post(url, fetchOptions = null) {
-    const optionsWithMethod = { ...fetchOptions, method: 'POST' };
-    return this.fetchAviasales(url, optionsWithMethod);
-  }
-
   async createSession(fetchOptions = null) {
     const optionsWithMethod = { ...fetchOptions, method: 'GET' };
     return this.fetchAviasales("/search", optionsWithMethod);
@@ -38,17 +33,17 @@ class Api {
     });
   }
 
-  async fakeExecuteSort(payload, modifiedTickets) {
+  async fakeExecuteSort(payload, newTickets) {
     return new Promise((resolve) => {
       setTimeout(() => {
         if (payload === "cheap") {
-          const result = [...modifiedTickets].sort((a, b) => a.price - b.price);
+          const result = [...newTickets].sort((a, b) => a.price - b.price);
 
           resolve(result);
         }
 
         if (payload === "fast") {
-          const result = [...modifiedTickets].sort((current, next) => {
+          const result = [...newTickets].sort((current, next) => {
             //Получаем сумму duration в обоих направлениях для current и next билетов.
             const durationCurrent = current.segments[0].duration + current.segments[1].duration;
             const durationNext = next.segments[0].duration + next.segments[1].duration;
@@ -60,7 +55,7 @@ class Api {
         }
 
         if (payload === "optimal") {
-          const result = [...modifiedTickets].sort((current, next) => {
+          const result = [...newTickets].sort((current, next) => {
             const priceDiff = current.price - next.price;
             const durationAdurationCurrent = current.segments[0].duration + current.segments[1].duration;
             const durationBdurationNext = next.segments[0].duration + next.segments[1].duration;

@@ -1,43 +1,35 @@
 import { useDispatch, useSelector } from 'react-redux';
 import classes from './Sort.module.scss';
-import { fetchTicketsSort, ticketsActions } from '../../../redux/reducer/ticketsSlice';
 import ButtonSortTicket from '../../wrapperComponents/ButtonSortTicket';
-import { useEffect } from 'react';
+import { ticketsActions } from '../../../redux/reducer/ticketsSlice';
 
 function SortTicket() {
   const dispatch = useDispatch();
-
-  // const fakeLoading = useSelector(state => state.ticketsReducer.fakeLoading);
-  const sortedType = useSelector(state => state.ticketsReducer.sortType);
-
-  useEffect(() => {
-    dispatch(ticketsActions.executeFilter());
-    dispatch(fetchTicketsSort());
-  }, [dispatch, sortedType]);
-
+  const stateFetch = useSelector(state => state.tickets);
+  const { sort } = stateFetch;
   return (
     <section className={classes['price-segment']}>
       <ul className={classes['link__btn-price']}>
         <li className="link__item">
           <ButtonSortTicket
-            onClick={() => dispatch(ticketsActions.setSortType('cheap'))}
-            type={sortedType === 'cheap' ? 'active' : 'disabled'}
+            onClick={() => dispatch(ticketsActions.setSort('cheap'))}
+            type={sort === 'cheap' ? 'active' : 'disabled'}
           >
             Самый дешевый
           </ButtonSortTicket>
         </li>
         <li className="link__item">
           <ButtonSortTicket
-            onClick={() => dispatch(ticketsActions.setSortType('fast'))}
-            type={sortedType === 'fast' ? 'active' : 'disabled'}
+            onClick={() => dispatch(ticketsActions.setSort('fast'))}
+            type={sort === 'fast' ? 'active' : 'disabled'}
           >
             Самый быстрый
           </ButtonSortTicket>
         </li>
         <li className="link__item">
           <ButtonSortTicket
-            onClick={() => dispatch(ticketsActions.setSortType('optimal'))}
-            type={sortedType === 'optimal' ? 'active' : 'disabled'}
+            onClick={() => dispatch(ticketsActions.setSort('optimal'))}
+            type={sort === 'optimal' ? 'active' : 'disabled'}
           >
             Оптимальный
           </ButtonSortTicket>

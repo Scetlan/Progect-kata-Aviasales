@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { ticketsReducer } from "./reducer/ticketsSlice";
 
-export const storeAviasales = configureStore({
+export const store = configureStore({
   reducer: {
-    ticketsReducer,
+    tickets: ticketsReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });

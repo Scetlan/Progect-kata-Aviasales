@@ -1,177 +1,218 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import Cookies from "js-cookie";
-import { v4 as createId } from "uuid";
-import { Api } from "../fetchRequests";
 
 const initialState = {
-  saveTickets: [],
-  modifiedTickets: [],
-  progressivelyLoadedTickets: [],
-  fetchLoading: null,
-  fakeLoading: null,
+  tickets: [],
+  newTickets: [],
+  searchId: '',
+  sort: '',
+  loading: false,
   sortType: null,
-  isReceivedFetchData: false,
   error: false,
   stop: false,
-  position: 5,
+  isShowMore: false,
+  showMoreCount: 5,
 
   stateCheckBox: {
-    disabledAllCheckbox: false,
-    allCheckbox: true,
-    noneCheckbox: false,
-    firstCheckbox: false,
-    secondCheckbox: false,
-    thirdCheckbox: false,
+    all: true,
+    noneTransfers: false,
+    oneTransfers: false,
+    twoTransfers: false,
+    threeTransfers: false,
   },
 };
-
-const api = new Api();
+const isError = (action) => action.type.endsWith('rejected');
 
 const ticketsSlice = createSlice({
   name: "tickets",
   initialState,
   reducers: {
-    addQuantityTikets: (state) => {
-      state.position += 5;
+    showMore(state) {
+      if (!state.isShowMore) {
+        state.isShowMore = true;
+        state.showMoreCount += 5;
+      }
     },
-    setCheckBox: (state, action) => {
-      const { key, isActive } = action.payload;
-      const { stateCheckBox } = state;
-
-      state.stateCheckBox[key] = isActive;
-
-      state.stateCheckBox.disabledAllCheckbox = stateCheckBox.noneCheckbox || stateCheckBox.firstCheckbox || stateCheckBox.secondCheckbox || stateCheckBox.thirdCheckbox;
-      if (key === 'allCheckbox' && isActive) {
-        for (const key in state.stateCheckBox) {
-          state.stateCheckBox[key] = false;
-        }
+    setIsChecked(state, action) {
+      state.filteredTickets = [];
+      if (state.isShowMore) {
+        state.isShowMore = false;
+        state.showMoreCount = 5;
+      }
+      if (action.payload === 'all') {
+        const all = !state.stateCheckBox.all;
+        state.stateCheckBox = {
+          all,
+          noneTransfers: all,
+          oneTransfers: all,
+          twoTransfers: all,
+          threeTransfers: all,
+        };
+      }
+      if (action.payload === 'noneTransfers') {
+        state.stateCheckBox = {
+          ...state.stateCheckBox,
+          all:
+            !state.stateCheckBox.noneTransfers &&
+            state.stateCheckBox.oneTransfers &&
+            state.stateCheckBox.twoTransfers &&
+            state.stateCheckBox.threeTransfers,
+          noneTransfers: !state.stateCheckBox.noneTransfers,
+        };
+      }
+      if (action.payload === 'oneTransfers') {
+        state.stateCheckBox = {
+          ...state.stateCheckBox,
+          all:
+            state.stateCheckBox.noneTransfers &&
+            !state.stateCheckBox.oneTransfers &&
+            state.stateCheckBox.twoTransfers &&
+            state.stateCheckBox.threeTransfers,
+          oneTransfers: !state.stateCheckBox.oneTransfers,
+        };
+      }
+      if (action.payload === 'twoTransfers') {
+        state.stateCheckBox = {
+          ...state.stateCheckBox,
+          all:
+            state.stateCheckBox.noneTransfers &&
+            state.stateCheckBox.oneTransfers &&
+            !state.stateCheckBox.twoTransfers &&
+            state.stateCheckBox.threeTransfers,
+          twoTransfers: !state.stateCheckBox.twoTransfers,
+        };
+      }
+      if (action.payload === 'threeTransfers') {
+        state.stateCheckBox = {
+          ...state.stateCheckBox,
+          all:
+            state.stateCheckBox.noneTransfers &&
+            state.stateCheckBox.oneTransfers &&
+            state.stateCheckBox.twoTransfers &&
+            !state.stateCheckBox.threeTransfers,
+          threeTransfers: !state.stateCheckBox.threeTransfers,
+        };
       }
     },
 
-    setSortType: (state, action) => {
-      if (action.payload === 'fast') {
-        state.sortType = action.payload;
+    setSort(state, action) {
+      if (state.isShowMore) {
+        state.isShowMore = false;
+        state.showMoreCount = 5;
       }
+      state.loading = true;
       if (action.payload === 'cheap') {
-        state.sortType = action.payload;
+        state.sort = 'cheap';
+        state.filteredTickets.sort((a, b) => {
+          return a.price - b.price;
+        });
+      }
+      if (action.payload === 'fast') {
+        state.sort = 'fast';
+        state.filteredTickets.sort((a, b) => {
+          const timeA = a.segments[0].duration + a.segments[1].duration;
+          const timeB = b.segments[0].duration + b.segments[1].duration;
+          return timeA - timeB;
+        });
       }
       if (action.payload === 'optimal') {
-        state.sortType = action.payload;
+        state.sort = 'optimal';
+        state.filteredTickets.sort((a, b) => {
+          const timeA = a.segments[0].duration + a.segments[1].duration;
+          const timeB = b.segments[0].duration + b.segments[1].duration;
+          return a.price - b.price || timeA - timeB;
+        });
       }
-    },
-
-    setIdTickets: (state, action) => {
-      const dataTrueId = action.payload.map((ticket) => {
-        return { ...ticket, id: createId() };
-      });
-
-      state.saveTickets = [...state.saveTickets, ...dataTrueId];
-    },
-
-    executeFilter: state => {
-      const { stateCheckBox } = state;
-      let results = [];
-      if (!stateCheckBox.disabledAllCheckbox) {
-        state.modifiedTickets = state.saveTickets;
-        return;
-      }
-      Object.keys(stateCheckBox).forEach((key, index) => {
-        if (stateCheckBox[key]) {
-          if (key !== 'allCheckbox' && key !== 'disabledAllCheckbox') {
-            //Вычитаем из index кол-во ключей которые хотим пропустить от 0.
-            const ticketsFilter = state.saveTickets.filter(({ segments }) =>
-              segments.every(segment => segment.stops.length === index - 2)
-            );
-            if (ticketsFilter) {
-              results = [...results, ...ticketsFilter];
-            }
-          }
-        }
-      });
-      state.position = 5;
-      state.modifiedTickets = results.sort(() => Math.random() - 0.5);
+      state.loading = false;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchNewTickets.pending, (state) => {
-      state.fetchLoading = "pending";
-      state.error = false;
-    });
-    builder.addCase(fetchNewTickets.fulfilled, (state, action) => {
-      state.stop = action.payload.stop;
-      state.isReceivedFetchData = true;
-      state.fetchLoading = "fulfilled";
-    });
-    builder.addCase(fetchNewTickets.rejected, (state) => {
-      state.error = true;
-    });
-
-    builder.addCase(loadingTickets.pending, (state) => {
-      state.fakeLoading = "pending";
-    });
-    builder.addCase(loadingTickets.fulfilled, (state, action) => {
-      state.fakeLoading = "fulfilled";
-
-      if (action.payload.length > 1) {
-        state.progressivelyLoadedTickets = action.payload;
-        return;
-      }
-
-      state.progressivelyLoadedTickets = state.saveTickets.slice(0, state.position);
-    });
-
-    builder.addCase(fetchTicketsSort.pending, (state) => {
-      state.fakeLoading = "pending";
-    });
-
-    builder.addCase(fetchTicketsSort.fulfilled, (state, action) => {
-      state.modifiedTickets = action.payload;
-      state.position = 5;
-      state.fakeLoading = "fulfilled";
-    });
-  },
-});
-
-export const fetchNewTickets = createAsyncThunk("ticketsSlice/fetchNewTickets", async (_, { dispatch }) => {
-  const session = Cookies.get('session');
-
-  if (!session) {
-    new Error("Not session");
+    builder
+      .addCase(searchId.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(searchId.fulfilled, (state, action) => {
+        state.loading = false;
+        state.searchId = action.payload.searchId;
+      })
+      .addCase(getFetchTickets.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getFetchTickets.fulfilled, (state, action) => {
+        state.loading = false;
+        state.stop = action.payload.stop;
+        state.tickets.push(...action.payload.tickets);
+      })
+      .addCase(getFilterTickets.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getFilterTickets.fulfilled, (state, action) => {
+        if (
+          state.filters.noneTransfers ||
+          state.filters.oneTransfer ||
+          state.filters.twoTransfers ||
+          state.filters.threeTransfers
+        )
+          state.filteredTickets.push(...action.payload);
+        if (state.stop) state.loading = false;
+      })
+      .addMatcher(isError, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   }
-
-  const result = await api.get(`/tickets?searchId=${session}`, {
-    headers: {
-      "Content-type": "application/json",
-    },
-  });
-
-  dispatch(ticketsActions.setIdTickets(result.tickets));
-
-  return result;
 });
 
-export const loadingTickets = createAsyncThunk("ticketsSlice/loadingTickets", async (_, { getState }) => {
-  const state = getState();
+const url = 'https://aviasales-test-api.kata.academy';
 
-  const position = state.ticketsReducer.position;
-  const modifiedTickets = state.ticketsReducer.modifiedTickets;
-
-  const result = await api.fakeEndpoint(0, modifiedTickets);
-
-  return result.slice(0, position);
+export const searchId = createAsyncThunk("ticketsSlice/searchId", async (_, { rejectWithValue }) => {
+  const response = await fetch(`${url}/search`);
+  if (!response.ok) {
+    return rejectWithValue('Сервер не отвечает!:(');
+  }
+  const data = await response.json();
+  return data;
 });
 
-//"fast" | "cheap" | "optimal"
-export const fetchTicketsSort = createAsyncThunk("ticketsSlice/fetchTicketsSort", async (_, { getState }) => {
-  const state = getState();
+export const getFetchTickets = createAsyncThunk('fetch/getFetchTickets', async (id, { rejectWithValue }) => {
+  const response = await fetch(`${url}/tickets?searchId=${id}`);
+  if (!response.ok) return rejectWithValue('Сервер не отвечает!:(');
+  const data = await response.json();
+  return data;
+}
+);
 
-  const sortType = state.ticketsReducer.sortType;
-  const modifiedTickets = state.ticketsReducer.modifiedTickets;
+export const getFilterTickets = createAsyncThunk("ticketsSlice/getFilterTickets", async (_, { tickets, filters }) => {
+  const filteredTickets = [];
 
-  return await api.fakeExecuteSort(sortType, modifiedTickets);
+  if (filters.noneTransfers) {
+    filteredTickets.push(
+      ...tickets.filter((ticket) => Math.max(ticket.segments[0].stops.length, ticket.segments[1].stops.length) === 0)
+    );
+  }
+  if (filters.oneTransfers) {
+    filteredTickets.push(
+      ...tickets.filter((ticket) => Math.max(ticket.segments[0].stops.length, ticket.segments[1].stops.length) === 1)
+    );
+  }
+  if (filters.twoTransfers) {
+    filteredTickets.push(
+      ...tickets.filter((ticket) => Math.max(ticket.segments[0].stops.length, ticket.segments[1].stops.length) === 2)
+    );
+  }
+  if (filters.threeTransfers) {
+    filteredTickets.push(
+      ...tickets.filter((ticket) => Math.max(ticket.segments[0].stops.length, ticket.segments[1].stops.length) === 3)
+    );
+  }
+  return filteredTickets;
 });
 
-const ticketsActions = ticketsSlice.actions;
+
+const ticketsActions = ticketsSlice.actions; //export const { setIsChecked, setSort, showMore } = fetchSlice.actions;
 const ticketsReducer = ticketsSlice.reducer;
 
 export { ticketsActions, ticketsReducer };
+
+
