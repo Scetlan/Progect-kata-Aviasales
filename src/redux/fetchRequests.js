@@ -1,11 +1,3 @@
-
-const httpMethod = {
-  GET: "GET",
-  POST: "POST",
-  PUT: "PUT",
-  DELETE: "DELETE",
-}
-
 class Api {
   constructor() {
     this.api = "https://aviasales-test-api.kata.academy";
