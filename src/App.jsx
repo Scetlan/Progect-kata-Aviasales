@@ -3,7 +3,12 @@ import img from './images/Logo.svg';
 
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFetchTickets, getFilterTickets, searchId } from './redux/reducer/ticketsSlice';
+import {
+  getFetchTickets,
+  getFilterTickets,
+  searchId,
+  ticketsActions,
+} from './redux/reducer/ticketsSlice';
 import MenuFilterTicket from './component/AsideMenu/MenuFilterTicket';
 import MainContent from './component/Main/MainContent';
 
@@ -11,7 +16,6 @@ function App() {
   const dispatch = useDispatch();
   const stateFetch = useSelector(state => state.tickets);
 
-  // const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isFilter, setIsFilter] = useState(false);
 
@@ -33,14 +37,16 @@ function App() {
       setIsFilter(true);
     }
   }, [
-    stateFetch.newTickets.all,
-    stateFetch.newTickets.noneTransfers,
-    stateFetch.newTickets.oneTransfer,
-    stateFetch.newTickets.twoTransfers,
-    stateFetch.newTickets.threeTransfers,
+    stateFetch.stateCheckBox.all,
+    stateFetch.stateCheckBox.noneTransfers,
+    stateFetch.stateCheckBox.oneTransfer,
+    stateFetch.stateCheckBox.twoTransfers,
+    stateFetch.stateCheckBox.threeTransfers,
     stateFetch.tickets,
     dispatch,
   ]);
+
+  const { setSort } = ticketsActions;
 
   useEffect(() => {
     if (stateFetch.newTickets.length !== 0) {
@@ -50,16 +56,12 @@ function App() {
     }
   }, [stateFetch.newTickets, dispatch, stateFetch.sort]);
 
-  console.log(stateFetch);
-
   return (
     <div className={classes['aviation-content']}>
       <header className={classes.pictures}>
         <img className={classes.icon} src={img} alt="" />
       </header>
-      {
-        (stateFetch.loading || isLoading) && <div>spiner</div> //  <Spin style={{ marginBottom: 20, marginTop: -40 }} />
-      }
+      {(stateFetch.loading || isLoading) && <p className={classes.loading}>Loading ...</p>}
       <section className={classes.content}>
         {isFilter && <MenuFilterTicket />}
         {isFilter && <MainContent tickets={stateFetch.newTickets} />}

@@ -5,13 +5,20 @@
   font-size: 12px;
   font-weight: 500;
   line-height: 12px;
+
+  &:hover {
+    background-color: rgb(241, 252, 255);
+    transition: background-color 0.5s ease-in-out;
+  }
   &:focus {
     color: #ffff;
     background-color: rgb(33, 150, 243);
+    transition: background-color 0.3s ease-in-out;
   }
-  &:hover {
+  &:active {
     color: #ffff;
-    background-color: rgb(33, 150, 243);
+    background-color: rgb(15, 63, 101);
+    transition: background-color 0.5s ease-in-out;
   }
 }
 
@@ -25,14 +32,14 @@
 
 .cheap {
   border-right: transparent;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
+  border-top-left-radius: 7px;
+  border-bottom-left-radius: 7px;
 }
 
 .optimal {
   border-left: transparent;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
+  border-top-right-radius: 7px;
+  border-bottom-right-radius: 7px;
 }
 
 .activeType {

@@ -9,58 +9,53 @@ function MenuFilterTicket() {
 
   const { setIsChecked } = ticketsActions;
 
-  const { all, noneTransfers, oneTransfers, twoTransfers, thirdTransfers } =
+  const { all, noneTransfers, oneTransfers, twoTransfers, threeTransfers } =
     stateFetch.stateCheckBox;
+
+  console.log(stateFetch);
   return (
     <aside className={classes.content__menu}>
-      <div className={classes['content__menu-container']}>
-        <h1 className={classes.content__title}>Количество пересадок</h1>
-        <Checkbox
-          id="all"
-          checked={all}
-          value="all"
-          onChange={() => {
-            dispatch(setIsChecked('all'));
-          }}
-          text="Все"
-        />
-        <Checkbox
-          id="off"
-          checked={noneTransfers}
-          value="noneTransfers"
-          onChange={() => {
-            dispatch(setIsChecked('all'));
-          }}
-          text="Без пересадок"
-        />
-        <Checkbox
-          id="one"
-          checked={oneTransfers}
-          value="oneTransfers"
-          onChange={() => {
-            dispatch(setIsChecked('all'));
-          }}
-          text="1 пересадка"
-        />
-        <Checkbox
-          id="two"
-          checked={twoTransfers}
-          value="twoTransfers"
-          onChange={() => {
-            dispatch(setIsChecked('all'));
-          }}
-          text="2 пересадки"
-        />
-        <Checkbox
-          id="three"
-          checked={thirdTransfers}
-          value="thirdTransfers"
-          onChange={() => {
-            dispatch(setIsChecked('all'));
-          }}
-          text="3 пересадки"
-        />
-      </div>
+      <h1 className={classes.content__title}>Количество пересадок</h1>
+      <Checkbox
+        id="all"
+        checked={all}
+        onChange={() => {
+          dispatch(setIsChecked('all'));
+        }}
+        text="Все"
+      />
+      <Checkbox
+        id="off"
+        checked={noneTransfers}
+        onChange={() => {
+          dispatch(setIsChecked('noneTransfers'));
+        }}
+        text="Без пересадок"
+      />
+      <Checkbox
+        id="one"
+        checked={oneTransfers}
+        onChange={() => {
+          dispatch(setIsChecked('oneTransfers'));
+        }}
+        text="1 пересадка"
+      />
+      <Checkbox
+        id="two"
+        checked={twoTransfers}
+        onChange={() => {
+          dispatch(setIsChecked('twoTransfers'));
+        }}
+        text="2 пересадки"
+      />
+      <Checkbox
+        id="three"
+        checked={threeTransfers}
+        onChange={() => {
+          dispatch(setIsChecked('threeTransfers'));
+        }}
+        text="3 пересадки"
+      />
     </aside>
   );
 }

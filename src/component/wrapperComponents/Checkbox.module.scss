@@ -1,5 +1,9 @@
 .content__transfer {
-  width: 100%;
+  max-width: 100%;
+  @media (min-width: 850px) {
+    max-width: none;
+    width: 100%;
+  }
 }
 
 .content__transfer:hover {
@@ -18,7 +22,6 @@
 
 .text {
   font-size: 13px;
-  padding-left: 10px;
 }
 
 .input__checkbox + label {
@@ -40,8 +43,8 @@
 .input__checkbox + label::before {
   content: '';
   display: inline-block;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
   flex-grow: 0;
   border: 1px solid #9abbce;
@@ -53,6 +56,8 @@
 }
 
 .content__transfer .input__checkbox:checked + label::before {
+  width: 18px;
+  height: 18px;
   border-color: #2196f3;
   background-repeat: no-repeat;
   background-position: center;

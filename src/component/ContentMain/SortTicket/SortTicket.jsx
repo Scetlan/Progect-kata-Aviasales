@@ -6,36 +6,37 @@ import { ticketsActions } from '../../../redux/reducer/ticketsSlice';
 function SortTicket() {
   const dispatch = useDispatch();
   const stateFetch = useSelector(state => state.tickets);
-  const { sort } = stateFetch;
+
   return (
-    <section className={classes['price-segment']}>
-      <ul className={classes['link__btn-price']}>
-        <li className="link__item">
-          <ButtonSortTicket
-            onClick={() => dispatch(ticketsActions.setSort('cheap'))}
-            type={sort === 'cheap' ? 'active' : 'disabled'}
-          >
-            Самый дешевый
-          </ButtonSortTicket>
-        </li>
-        <li className="link__item">
-          <ButtonSortTicket
-            onClick={() => dispatch(ticketsActions.setSort('fast'))}
-            type={sort === 'fast' ? 'active' : 'disabled'}
-          >
-            Самый быстрый
-          </ButtonSortTicket>
-        </li>
-        <li className="link__item">
-          <ButtonSortTicket
-            onClick={() => dispatch(ticketsActions.setSort('optimal'))}
-            type={sort === 'optimal' ? 'active' : 'disabled'}
-          >
-            Оптимальный
-          </ButtonSortTicket>
-        </li>
-      </ul>
-    </section>
+    <ul className={classes.category__price}>
+      <li className="link__item">
+        <ButtonSortTicket
+          id={'one'}
+          onChange={() => dispatch(ticketsActions.setSort('cheap'))}
+          type={stateFetch.sort === 'cheap' ? 'active' : 'disabled'}
+        >
+          Самый дешевый
+        </ButtonSortTicket>
+      </li>
+      <li className="link__item">
+        <ButtonSortTicket
+          id={'two'}
+          onChange={() => dispatch(ticketsActions.setSort('fast'))}
+          type={stateFetch.sort === 'fast' ? 'active' : 'disabled'}
+        >
+          Самый быстрый
+        </ButtonSortTicket>
+      </li>
+      <li className="link__item">
+        <ButtonSortTicket
+          id={'three'}
+          onChange={() => dispatch(ticketsActions.setSort('optimal'))}
+          type={stateFetch.sort === 'optimal' ? 'active' : 'disabled'}
+        >
+          Оптимальный
+        </ButtonSortTicket>
+      </li>
+    </ul>
   );
 }
 

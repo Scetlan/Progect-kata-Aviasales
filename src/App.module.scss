@@ -12,8 +12,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
-  padding: 50px 0;
+  padding: 10px 0;
+  @media (min-width: 850px) {
+    padding: 50px 0;
+  }
 }
 
 body {
@@ -23,10 +25,15 @@ body {
   justify-content: center;
 
   font:
-    16px/1.4 'Open Sans',
+    10px/1.2 'Open Sans',
     sans-serif;
   background: #f3f7fa;
   color: #4a4a4a;
+  @media (min-width: 850px) {
+    font:
+      16px/1.4 'Open Sans',
+      sans-serif;
+  }
 }
 
 button {
@@ -35,10 +42,17 @@ button {
 }
 
 .aviation-content {
-  width: 754px;
   margin: 0 auto;
 }
 
 .content {
   display: flex;
+  flex-direction: column;
+  @media (min-width: 850px) {
+    flex-direction: row;
+  }
+}
+
+.loading {
+  font-size: 18px;
 }

@@ -3,15 +3,17 @@ li {
 }
 
 .content__menu {
-  width: 232px;
-  height: 260px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
+  min-width: none;
+  max-width: 100%;
   border-radius: 5px;
   background-color: #ffffff;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  @media (min-width: 850px) {
+    min-width: 232px;
+    height: 252px;
+    margin-bottom: 10px;
+  }
 }
 
 .content__menu-container {
@@ -27,5 +29,6 @@ li {
 
   padding: 0px 20px;
 
-  margin-bottom: 13px;
+  margin-bottom: 10px;
+  margin-top: 20px;
 }
