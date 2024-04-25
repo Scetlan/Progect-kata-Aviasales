@@ -1,3 +1,8 @@
 .category__price {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 168px) minmax(0, 168px) minmax(0, 168px);
+}
+
+.link__item {
+  max-width: 100%;
 }

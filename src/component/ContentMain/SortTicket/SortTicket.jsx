@@ -9,28 +9,28 @@ function SortTicket() {
 
   return (
     <ul className={classes.category__price}>
-      <li className="link__item">
+      <li className={classes.link__item}>
         <ButtonSortTicket
           id={'one'}
-          onChange={() => dispatch(ticketsActions.setSort('cheap'))}
+          onClick={() => dispatch(ticketsActions.setSort('cheap'))}
           type={stateFetch.sort === 'cheap' ? 'active' : 'disabled'}
         >
           Самый дешевый
         </ButtonSortTicket>
       </li>
-      <li className="link__item">
+      <li className={classes.link__item}>
         <ButtonSortTicket
           id={'two'}
-          onChange={() => dispatch(ticketsActions.setSort('fast'))}
+          onClick={() => dispatch(ticketsActions.setSort('fast'))}
           type={stateFetch.sort === 'fast' ? 'active' : 'disabled'}
         >
           Самый быстрый
         </ButtonSortTicket>
       </li>
-      <li className="link__item">
+      <li className={classes.link__item}>
         <ButtonSortTicket
           id={'three'}
-          onChange={() => dispatch(ticketsActions.setSort('optimal'))}
+          onClick={() => dispatch(ticketsActions.setSort('optimal'))}
           type={stateFetch.sort === 'optimal' ? 'active' : 'disabled'}
         >
           Оптимальный

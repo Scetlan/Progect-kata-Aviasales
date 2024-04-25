@@ -1,13 +1,13 @@
 .ticket__item {
   position: relative;
-  width: 320px;
+  width: 100%;
   height: 184px;
   background-color: #ffff;
 
   border-radius: 5px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   @media (min-width: 850px) {
-    width: 502px;
+    // max-width: 502px;
     height: 184px;
   }
 }

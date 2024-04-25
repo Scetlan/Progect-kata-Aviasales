@@ -3,16 +3,14 @@ li {
 }
 
 .content__menu {
-  min-width: none;
   max-width: 100%;
   border-radius: 5px;
   background-color: #ffffff;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 10px;
   @media (min-width: 850px) {
-    min-width: 232px;
     height: 252px;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
   }
 }
 

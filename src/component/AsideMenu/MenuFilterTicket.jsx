@@ -12,7 +12,6 @@ function MenuFilterTicket() {
   const { all, noneTransfers, oneTransfers, twoTransfers, threeTransfers } =
     stateFetch.stateCheckBox;
 
-  console.log(stateFetch);
   return (
     <aside className={classes.content__menu}>
       <h1 className={classes.content__title}>Количество пересадок</h1>

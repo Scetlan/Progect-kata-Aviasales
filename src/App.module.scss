@@ -46,10 +46,11 @@ button {
 }
 
 .content {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  column-gap: 20px;
   @media (min-width: 850px) {
-    flex-direction: row;
+    grid-template-columns: minmax(0, 232px) minmax(0, 1fr);
+    column-gap: 20px;
   }
 }
 

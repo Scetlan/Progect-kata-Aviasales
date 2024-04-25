@@ -3,9 +3,11 @@ import Ticket from '../ContentMain/Ticket/Ticket';
 import uniqid from 'uniqid';
 
 import classes from './Main.module.scss';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { ticketsActions } from '../../redux/reducer/ticketsSlice';
 
 function MainContent({ tickets }) {
+  const dispatch = useDispatch();
   const fetchState = useSelector(state => state.tickets);
 
   const isFilter =
@@ -14,12 +16,7 @@ function MainContent({ tickets }) {
     fetchState.stateCheckBox.twoTransfers ||
     fetchState.stateCheckBox.threeTransfers;
 
-  const displayTickets = [];
-  if (isFilter) {
-    for (let i = 0; i < fetchState.showMoreCount; i++) {
-      displayTickets.push(tickets[i]);
-    }
-  }
+  const displayTickets = isFilter ? tickets.slice(0, fetchState.showMoreCount) : [];
 
   return (
     <main className={classes.content__main}>
@@ -34,6 +31,16 @@ function MainContent({ tickets }) {
             </ul>
           );
         })
+      )}
+      {isFilter && (
+        <button
+          type="button"
+          aria-label="show more ticket"
+          className={classes.more}
+          onClick={() => dispatch(ticketsActions.showMore())}
+        >
+          ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ!
+        </button>
       )}
     </main>
   );

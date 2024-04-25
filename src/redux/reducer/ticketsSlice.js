@@ -12,7 +12,7 @@ const initialState = {
   showMoreCount: 5,
 
   stateCheckBox: {
-    all: true,
+    all: false,
     noneTransfers: false,
     oneTransfers: false,
     twoTransfers: false,
