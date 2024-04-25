@@ -1,7 +1,7 @@
-import { useDispatch, useSelector } from 'react-redux';
 import classes from './Sort.module.scss';
 import ButtonSortTicket from '../../wrapperComponents/ButtonSortTicket';
 import { ticketsActions } from '../../../redux/reducer/ticketsSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 function SortTicket() {
   const dispatch = useDispatch();
@@ -11,7 +11,7 @@ function SortTicket() {
     <ul className={classes.category__price}>
       <li className={classes.link__item}>
         <ButtonSortTicket
-          id={'one'}
+          id="one"
           onClick={() => dispatch(ticketsActions.setSort('cheap'))}
           type={stateFetch.sort === 'cheap' ? 'active' : 'disabled'}
         >
@@ -20,7 +20,7 @@ function SortTicket() {
       </li>
       <li className={classes.link__item}>
         <ButtonSortTicket
-          id={'two'}
+          id="two"
           onClick={() => dispatch(ticketsActions.setSort('fast'))}
           type={stateFetch.sort === 'fast' ? 'active' : 'disabled'}
         >
@@ -29,7 +29,7 @@ function SortTicket() {
       </li>
       <li className={classes.link__item}>
         <ButtonSortTicket
-          id={'three'}
+          id="three"
           onClick={() => dispatch(ticketsActions.setSort('optimal'))}
           type={stateFetch.sort === 'optimal' ? 'active' : 'disabled'}
         >
@@ -40,4 +40,4 @@ function SortTicket() {
   );
 }
 
-export { SortTicket };
+export default SortTicket;

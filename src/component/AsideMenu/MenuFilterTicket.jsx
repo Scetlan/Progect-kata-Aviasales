@@ -1,7 +1,7 @@
-import { useDispatch, useSelector } from 'react-redux';
 import classes from './MenuFilterTicket.module.scss';
 import Checkbox from '../wrapperComponents/Checkbox';
 import { ticketsActions } from '../../redux/reducer/ticketsSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 function MenuFilterTicket() {
   const dispatch = useDispatch();

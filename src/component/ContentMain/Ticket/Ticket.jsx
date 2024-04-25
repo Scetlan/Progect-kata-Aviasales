@@ -1,7 +1,6 @@
-import { lightFormat } from 'date-fns';
 import classes from './Ticket.module.scss';
-import React from 'react';
-import { arrivalTime } from '../../../utils/arrivalTime';
+import arrivalTime from '../../../utils/arrivalTime';
+import { lightFormat } from 'date-fns';
 import uniqid from 'uniqid';
 
 function Ticket({ carrier, price, segments }) {
@@ -20,6 +19,14 @@ function Ticket({ carrier, price, segments }) {
           price &&
           segments[0] &&
           segments.map(({ origin, destination, stops, duration, date }) => {
+            let transfer;
+            if (stops.length === 0) {
+              transfer = 'БЕЗ ПЕРЕСАДОК';
+            } else if (stops.length === 1) {
+              transfer = '1 ПЕРЕСАДКА';
+            } else {
+              transfer = `${stops.length} ПЕРЕСАДКИ`;
+            }
             return (
               <li key={date} className={classes['ticket-lists__item']}>
                 <div className={classes.path}>
@@ -37,13 +44,7 @@ function Ticket({ carrier, price, segments }) {
                   >{`${Math.trunc(duration / 60)}ч ${duration % 60}м`}</span>
                 </div>
                 <div className={classes.path}>
-                  <span className={classes.cities}>
-                    {stops.length === 0
-                      ? 'БЕЗ ПЕРЕСАДОК'
-                      : stops.length === 1
-                        ? '1 ПЕРЕСАДКА'
-                        : `${stops.length} ПЕРЕСАДКИ`}
-                  </span>
+                  <span className={classes.cities}>{transfer}</span>
                   <span className={classes.time}>{stops.join(', ')}</span>
                 </div>
               </li>

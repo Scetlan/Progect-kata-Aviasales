@@ -1,8 +1,6 @@
 import classes from './App.module.scss';
 import img from './images/Logo.svg';
 
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   getFetchTickets,
   getFilterTickets,
@@ -11,6 +9,8 @@ import {
 } from './redux/reducer/ticketsSlice';
 import MenuFilterTicket from './component/AsideMenu/MenuFilterTicket';
 import MainContent from './component/Main/MainContent';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 
 function App() {
   const dispatch = useDispatch();
@@ -22,13 +22,13 @@ function App() {
   useEffect(() => {
     setIsLoading(true);
     dispatch(searchId());
-  }, [dispatch]);
+  }, [dispatch, setIsLoading]);
 
   useEffect(() => {
     if (stateFetch.searchId && !stateFetch.stop && !stateFetch.loading)
       dispatch(getFetchTickets(stateFetch.searchId));
     if (stateFetch.stop) setIsLoading(false);
-  }, [stateFetch.searchId, stateFetch.loading, dispatch, stateFetch.stop]);
+  }, [stateFetch.searchId, stateFetch.loading, dispatch, stateFetch.stop, setIsLoading]);
 
   useEffect(() => {
     setIsFilter(false);
@@ -37,12 +37,13 @@ function App() {
       setIsFilter(true);
     }
   }, [
+    setIsLoading,
+    stateFetch.tickets.length,
     stateFetch.stateCheckBox.all,
     stateFetch.stateCheckBox.noneTransfers,
     stateFetch.stateCheckBox.oneTransfer,
     stateFetch.stateCheckBox.twoTransfers,
     stateFetch.stateCheckBox.threeTransfers,
-    stateFetch.tickets,
     dispatch,
   ]);
 
@@ -54,7 +55,7 @@ function App() {
       if (stateFetch.sort === 'fast') dispatch(setSort('fast'));
       if (stateFetch.sort === 'optimal') dispatch(setSort('optimal'));
     }
-  }, [stateFetch.newTickets, dispatch, stateFetch.sort]);
+  }, [dispatch, stateFetch.newTickets, stateFetch.sort, setSort]);
 
   return (
     <div className={classes['aviation-content']}>

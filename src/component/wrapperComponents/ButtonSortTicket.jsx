@@ -1,10 +1,10 @@
-import classNames from 'classnames';
 import classes from './Button.module.scss';
+import classNames from 'classnames';
 
-function ButtonSortTicket({ type, children, id = null, ...props }) {
+function ButtonSortTicket({ type, children, id = null, onClick }) {
   return (
     <button
-      {...props}
+      onClick={onClick}
       type="button"
       // id={classes}
       className={classNames(classes.id, classes.link__btn, {

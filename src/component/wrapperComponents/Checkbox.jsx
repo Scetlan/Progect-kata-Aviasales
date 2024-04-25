@@ -1,12 +1,12 @@
 import classes from './Checkbox.module.scss';
 
-function Checkbox({ checked, text, id, ...props }) {
+function Checkbox({ checked, text, id, onChange }) {
   return (
     <div className={classes.content__transfer}>
       <input
-        {...props}
+        onChange={onChange}
         type="checkbox"
-        className={classes['input__checkbox']}
+        className={classes.input__checkbox}
         id={id}
         checked={checked}
       />

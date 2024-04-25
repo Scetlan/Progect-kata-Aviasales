@@ -5,7 +5,8 @@ module.exports = {
     jest: true,
   },
   ignorePatterns: ['node_modules', 'dist', 'build'],
-  extends: ['airbnb', 'airbnb/hooks', 'plugin:react/jsx-runtime', 'prettier'],
+  extends: ['eslint:recommended', 'airbnb', 'airbnb/hooks', 'plugin:react/jsx-runtime', 'plugin:jsx-a11y/recommended',
+    'prettier'],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -28,7 +29,7 @@ module.exports = {
     'import/order': [
       'error',
       {
-        groups: ['index', 'sibling', 'parent', 'internal', 'external', 'builtin', 'object', 'type'],
+        groups: ['index', 'sibling', 'parent', 'internal', 'external', 'builtin'],
       },
     ],
   },

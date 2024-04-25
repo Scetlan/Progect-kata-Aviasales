@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   tickets: [],
@@ -19,55 +19,70 @@ const initialState = {
     threeTransfers: false,
   },
 };
-const isError = (action) => action.type.endsWith('rejected');
+const isError = action => action.type.endsWith('rejected');
 const url = 'https://aviasales-test-api.kata.academy';
 
-export const searchId = createAsyncThunk("ticketsSlice/searchId", async (_, { rejectWithValue }) => {
-  const response = await fetch(`${url}/search`);
-  if (!response.ok) {
-    return rejectWithValue('Сервер не отвечает!:(');
+export const searchId = createAsyncThunk(
+  'ticketsSlice/searchId',
+  async (_, { rejectWithValue }) => {
+    const response = await fetch(`${url}/search`);
+    if (!response.ok) {
+      return rejectWithValue('Сервер не отвечает!:(');
+    }
+    const data = await response.json();
+    return data;
   }
-  const data = await response.json();
-  return data;
-});
-
-export const getFetchTickets = createAsyncThunk('fetch/getFetchTickets', async (id, { rejectWithValue }) => {
-  const response = await fetch(`${url}/tickets?searchId=${id}`);
-  if (!response.ok) return rejectWithValue('Сервер не отвечает!:(');
-  const data = await response.json();
-  return data;
-}
 );
 
-export const getFilterTickets = createAsyncThunk("ticketsSlice/getFilterTickets", async ({ tickets, stateCheckBox }) => {
-  const newTickets = [];
+export const getFetchTickets = createAsyncThunk(
+  'fetch/getFetchTickets',
+  async (id, { rejectWithValue }) => {
+    const response = await fetch(`${url}/tickets?searchId=${id}`);
+    if (!response.ok) return rejectWithValue('Сервер не отвечает!:(');
+    const data = await response.json();
+    return data;
+  }
+);
 
-  if (stateCheckBox.noneTransfers) {
-    newTickets.push(
-      ...tickets.filter((ticket) => Math.max(ticket.segments[0].stops.length, ticket.segments[1].stops.length) === 0)
-    );
-  }
-  if (stateCheckBox.oneTransfers) {
-    newTickets.push(
-      ...tickets.filter((ticket) => Math.max(ticket.segments[0].stops.length, ticket.segments[1].stops.length) === 1)
-    );
-  }
-  if (stateCheckBox.twoTransfers) {
-    newTickets.push(
-      ...tickets.filter((ticket) => Math.max(ticket.segments[0].stops.length, ticket.segments[1].stops.length) === 2)
-    );
-  }
-  if (stateCheckBox.threeTransfers) {
-    newTickets.push(
-      ...tickets.filter((ticket) => Math.max(ticket.segments[0].stops.length, ticket.segments[1].stops.length) === 3)
-    );
-  }
-  return newTickets;
-});
+export const getFilterTickets = createAsyncThunk(
+  'ticketsSlice/getFilterTickets',
+  async ({ tickets, stateCheckBox }) => {
+    const newTickets = [];
 
+    if (stateCheckBox.noneTransfers) {
+      newTickets.push(
+        ...tickets.filter(
+          ticket => Math.max(ticket.segments[0].stops.length, ticket.segments[1].stops.length) === 0
+        )
+      );
+    }
+    if (stateCheckBox.oneTransfers) {
+      newTickets.push(
+        ...tickets.filter(
+          ticket => Math.max(ticket.segments[0].stops.length, ticket.segments[1].stops.length) === 1
+        )
+      );
+    }
+    if (stateCheckBox.twoTransfers) {
+      newTickets.push(
+        ...tickets.filter(
+          ticket => Math.max(ticket.segments[0].stops.length, ticket.segments[1].stops.length) === 2
+        )
+      );
+    }
+    if (stateCheckBox.threeTransfers) {
+      newTickets.push(
+        ...tickets.filter(
+          ticket => Math.max(ticket.segments[0].stops.length, ticket.segments[1].stops.length) === 3
+        )
+      );
+    }
+    return newTickets;
+  }
+);
 
 const ticketsSlice = createSlice({
-  name: "tickets",
+  name: 'tickets',
   initialState,
   reducers: {
     showMore(state) {
@@ -146,9 +161,7 @@ const ticketsSlice = createSlice({
       state.loading = true;
       if (action.payload === 'cheap') {
         state.sort = 'cheap';
-        state.newTickets.sort((a, b) => {
-          return a.price - b.price;
-        });
+        state.newTickets.sort((a, b) => a.price - b.price);
       }
       if (action.payload === 'fast') {
         state.sort = 'fast';
@@ -169,9 +182,9 @@ const ticketsSlice = createSlice({
       state.loading = false;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
-      .addCase(searchId.pending, (state) => {
+      .addCase(searchId.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -179,7 +192,7 @@ const ticketsSlice = createSlice({
         state.loading = false;
         state.searchId = action.payload.searchId;
       })
-      .addCase(getFetchTickets.pending, (state) => {
+      .addCase(getFetchTickets.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -188,7 +201,7 @@ const ticketsSlice = createSlice({
         state.stop = action.payload.stop;
         state.tickets.push(...action.payload.tickets);
       })
-      .addCase(getFilterTickets.pending, (state) => {
+      .addCase(getFilterTickets.pending, state => {
         state.loading = true;
       })
       .addCase(getFilterTickets.fulfilled, (state, action) => {
@@ -205,12 +218,10 @@ const ticketsSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       });
-  }
+  },
 });
 
-const ticketsActions = ticketsSlice.actions; //export const { setIsChecked, setSort, showMore } = fetchSlice.actions;
+const ticketsActions = ticketsSlice.actions; // export const { setIsChecked, setSort, showMore } = fetchSlice.actions;
 const ticketsReducer = ticketsSlice.reducer;
 
 export { ticketsActions, ticketsReducer };
-
-

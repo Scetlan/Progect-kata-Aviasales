@@ -1,9 +1,11 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { ticketsReducer } from "./reducer/ticketsSlice";
+import { ticketsReducer } from './reducer/ticketsSlice';
+import { configureStore } from '@reduxjs/toolkit';
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
     tickets: ticketsReducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
+  middleware: getDefaultMiddleware => getDefaultMiddleware(),
 });
+
+export default store;

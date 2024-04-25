@@ -1,10 +1,10 @@
-import { SortTicket } from '../ContentMain/SortTicket/SortTicket';
+import classes from './Main.module.scss';
+import SortTicket from '../ContentMain/SortTicket/SortTicket';
 import Ticket from '../ContentMain/Ticket/Ticket';
+import { ticketsActions } from '../../redux/reducer/ticketsSlice';
 import uniqid from 'uniqid';
 
-import classes from './Main.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { ticketsActions } from '../../redux/reducer/ticketsSlice';
 
 function MainContent({ tickets }) {
   const dispatch = useDispatch();
@@ -24,13 +24,16 @@ function MainContent({ tickets }) {
       {!isFilter ? (
         <p className={classes.search__error}>Подходящие рейсы не найдены</p>
       ) : (
-        displayTickets.map(ticket => {
-          return (
-            <ul className={classes.ticket}>
-              <Ticket key={uniqid.time('ticket-')} {...ticket} />
-            </ul>
-          );
-        })
+        displayTickets.map(ticket => (
+          <ul className={classes.ticket}>
+            <Ticket
+              key={uniqid.time('ticket-')}
+              carrier={ticket.carrier}
+              price={ticket.price}
+              segments={ticket.segments}
+            />
+          </ul>
+        ))
       )}
       {isFilter && (
         <button
