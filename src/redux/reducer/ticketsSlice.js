@@ -4,7 +4,7 @@ const initialState = {
   tickets: [],
   newTickets: [],
   searchId: '',
-  sort: '',
+  sort: 'cheap',
   loading: false,
   error: false,
   stop: false,
@@ -12,11 +12,7 @@ const initialState = {
   showMoreCount: 5,
 
   stateCheckBox: {
-    all: false,
-    noneTransfers: false,
-    oneTransfers: false,
-    twoTransfers: false,
-    threeTransfers: false,
+    all: true, noneTransfers: true, oneTransfers: true, twoTransfers: true, threeTransfers: true,
   },
 };
 const isError = action => action.type.endsWith('rejected');
@@ -47,36 +43,34 @@ export const getFetchTickets = createAsyncThunk(
 export const getFilterTickets = createAsyncThunk(
   'ticketsSlice/getFilterTickets',
   async ({ tickets, stateCheckBox }) => {
-    const newTickets = [];
+    const newTickets = tickets.filter(ticket => {
+      if (
+        stateCheckBox.noneTransfers &&
+        Math.max(ticket.segments[0].stops.length, ticket.segments[1].stops.length) === 0
+      ) {
+        return true;
+      }
+      if (
+        stateCheckBox.oneTransfers &&
+        Math.max(ticket.segments[0].stops.length, ticket.segments[1].stops.length) === 1
+      ) {
+        return true;
+      }
+      if (
+        stateCheckBox.twoTransfers &&
+        Math.max(ticket.segments[0].stops.length, ticket.segments[1].stops.length) === 2
+      ) {
+        return true;
+      }
+      if (
+        stateCheckBox.threeTransfers &&
+        Math.max(ticket.segments[0].stops.length, ticket.segments[1].stops.length) === 3
+      ) {
+        return true;
+      }
+      return false;
+    });
 
-    if (stateCheckBox.noneTransfers) {
-      newTickets.push(
-        ...tickets.filter(
-          ticket => Math.max(ticket.segments[0].stops.length, ticket.segments[1].stops.length) === 0
-        )
-      );
-    }
-    if (stateCheckBox.oneTransfers) {
-      newTickets.push(
-        ...tickets.filter(
-          ticket => Math.max(ticket.segments[0].stops.length, ticket.segments[1].stops.length) === 1
-        )
-      );
-    }
-    if (stateCheckBox.twoTransfers) {
-      newTickets.push(
-        ...tickets.filter(
-          ticket => Math.max(ticket.segments[0].stops.length, ticket.segments[1].stops.length) === 2
-        )
-      );
-    }
-    if (stateCheckBox.threeTransfers) {
-      newTickets.push(
-        ...tickets.filter(
-          ticket => Math.max(ticket.segments[0].stops.length, ticket.segments[1].stops.length) === 3
-        )
-      );
-    }
     return newTickets;
   }
 );
@@ -92,6 +86,7 @@ const ticketsSlice = createSlice({
       }
     },
     setIsChecked(state, action) {
+      console.log(action);
       state.newTickets = [];
       if (state.isShowMore) {
         state.isShowMore = false;

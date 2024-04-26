@@ -18,6 +18,7 @@ function MenuFilterTicket() {
       <Checkbox
         id="all"
         checked={all}
+        value={'all'}
         onChange={() => {
           dispatch(setIsChecked('all'));
         }}
@@ -26,6 +27,7 @@ function MenuFilterTicket() {
       <Checkbox
         id="off"
         checked={noneTransfers}
+        value={'noneTransfers'}
         onChange={() => {
           dispatch(setIsChecked('noneTransfers'));
         }}
@@ -34,6 +36,7 @@ function MenuFilterTicket() {
       <Checkbox
         id="one"
         checked={oneTransfers}
+        value={'oneTransfers'}
         onChange={() => {
           dispatch(setIsChecked('oneTransfers'));
         }}
@@ -42,6 +45,7 @@ function MenuFilterTicket() {
       <Checkbox
         id="two"
         checked={twoTransfers}
+        value={'twoTransfers'}
         onChange={() => {
           dispatch(setIsChecked('twoTransfers'));
         }}
@@ -50,6 +54,7 @@ function MenuFilterTicket() {
       <Checkbox
         id="three"
         checked={threeTransfers}
+        value={'threeTransfers'}
         onChange={() => {
           dispatch(setIsChecked('threeTransfers'));
         }}
