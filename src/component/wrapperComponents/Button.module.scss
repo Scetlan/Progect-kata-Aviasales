@@ -47,5 +47,7 @@
 }
 
 .activeType {
-  padding: 2px;
+  color: #ffff;
+  background-color: rgb(33, 150, 243);
+  transition: background-color 0.3s ease-in-out;
 }

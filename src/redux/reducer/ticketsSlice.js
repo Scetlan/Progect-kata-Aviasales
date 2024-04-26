@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import fakeExecuteSort from '../../utils/fakeExecuterSort';
 
 const initialState = {
   tickets: [],
@@ -74,6 +75,15 @@ export const getFilterTickets = createAsyncThunk(
     return newTickets;
   }
 );
+
+export const fetchTicketsSort = createAsyncThunk("ticketsSlice/fetchTicketsSort", async (_, { getState }) => {
+  const state = getState();
+
+  const sorted = state.ticketsReducer.sort;
+  const modifiedTickets = state.ticketsReducer.newTickets;
+
+  return await fakeExecuteSort(sorted, modifiedTickets);
+});
 
 const ticketsSlice = createSlice({
   name: 'tickets',
@@ -208,6 +218,12 @@ const ticketsSlice = createSlice({
         )
           state.newTickets.push(...action.payload);
         if (state.stop) state.loading = false;
+      })
+      .addCase(fetchTicketsSort.pending, (state) => {
+        state.loading = false;
+      }).addCase(fetchTicketsSort.fulfilled, (state, action) => {
+        state.newTickets = action.payload;
+        state.showMoreCount = 5;
       })
       .addMatcher(isError, (state, action) => {
         state.loading = false;

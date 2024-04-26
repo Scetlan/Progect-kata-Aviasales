@@ -6,14 +6,14 @@ import uniqid from 'uniqid';
 function Ticket({ carrier, price, segments }) {
   return (
     <li key={uniqid.time('ticket__item-')} className={classes.ticket__item}>
-      <section className={classes['ticket__item-price']}>
+      <header className={classes['ticket__item-price']}>
         <span className={classes.price}>{price} P</span>
         <img
           src={`https://pics.avs.io/99/36/${carrier}.png`}
           alt="airline logo"
           className={classes.logo}
         />
-      </section>
+      </header>
       <ul className={classes['ticket-lists']}>
         {carrier &&
           price &&

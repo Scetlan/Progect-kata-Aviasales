@@ -1,7 +1,8 @@
 import classes from './MenuFilterTicket.module.scss';
 import Checkbox from '../wrapperComponents/Checkbox';
-import { ticketsActions } from '../../redux/reducer/ticketsSlice';
+import { fetchTicketsSort, ticketsActions } from '../../redux/reducer/ticketsSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 function MenuFilterTicket() {
   const dispatch = useDispatch();
@@ -11,6 +12,10 @@ function MenuFilterTicket() {
 
   const { all, noneTransfers, oneTransfers, twoTransfers, threeTransfers } =
     stateFetch.stateCheckBox;
+
+  useEffect(() => {
+    dispatch(fetchTicketsSort());
+  }, [dispatch, stateFetch.stateCheckBox]);
 
   return (
     <aside className={classes.content__menu}>

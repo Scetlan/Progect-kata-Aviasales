@@ -1,11 +1,16 @@
 import classes from './Sort.module.scss';
 import ButtonSortTicket from '../../wrapperComponents/ButtonSortTicket';
-import { ticketsActions } from '../../../redux/reducer/ticketsSlice';
+import { fetchTicketsSort, ticketsActions } from '../../../redux/reducer/ticketsSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 function SortTicket() {
   const dispatch = useDispatch();
   const stateFetch = useSelector(state => state.tickets);
+
+  useEffect(() => {
+    dispatch(fetchTicketsSort());
+  }, [dispatch, stateFetch.sort]);
 
   return (
     <ul className={classes.category__price}>
