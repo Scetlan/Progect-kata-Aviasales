@@ -41,7 +41,7 @@ function App() {
     stateFetch.tickets.length,
     stateFetch.stateCheckBox.all,
     stateFetch.stateCheckBox.noneTransfers,
-    stateFetch.stateCheckBox.oneTransfer,
+    stateFetch.stateCheckBox.oneTransfers,
     stateFetch.stateCheckBox.twoTransfers,
     stateFetch.stateCheckBox.threeTransfers,
     dispatch,

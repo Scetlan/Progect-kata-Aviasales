@@ -12,7 +12,7 @@ function MainContent({ tickets }) {
 
   const isFilter =
     fetchState.stateCheckBox.noneTransfers ||
-    fetchState.stateCheckBox.oneTransfer ||
+    fetchState.stateCheckBox.oneTransfers ||
     fetchState.stateCheckBox.twoTransfers ||
     fetchState.stateCheckBox.threeTransfers;
 
